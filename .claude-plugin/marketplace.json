@@ -1,0 +1,14 @@
+{
+  "name": "explainer-page-marketplace",
+  "description": "Single-plugin marketplace for the explainer-page skill.",
+  "owner": {
+    "name": "wlsdnen"
+  },
+  "plugins": [
+    {
+      "name": "explainer-page",
+      "source": "./",
+      "description": "Interactive single-file HTML explainer pages from papers, lectures, code, and tech blogs."
+    }
+  ]
+}

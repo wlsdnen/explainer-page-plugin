@@ -1,0 +1,16 @@
+{
+  "name": "explainer-page",
+  "version": "0.1.0",
+  "description": "Write interactive single-file HTML explainer pages from papers, lectures, code, and tech blogs (Korean by default).",
+  "keywords": [
+    "explainer",
+    "education",
+    "html",
+    "visualization"
+  ],
+  "author": {
+    "name": "wlsdnen"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/wlsdnen/explainer-page-plugin"
+}
