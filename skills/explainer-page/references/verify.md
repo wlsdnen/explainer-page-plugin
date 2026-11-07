@@ -23,6 +23,41 @@ uv run --with playwright python <skill-dir>/scripts/check_page.py --self-test   
 check_page.py는 첫 조작부만 누른다. 나머지는 스크래치 디렉터리에 Playwright 스크립트를 따로 써서 확인한다.
 
 - 보이는 버튼을 모두 누르고, 슬라이더를 최소·최대로 옮기고(`input`/`change` 이벤트 발생), select의 마지막 항목을 고른 뒤 콘솔 에러와 가로 넘침을 다시 본다.
+예시 스크립트(`drive.py`, 스크래치 디렉터리에 두고 `uv run --with playwright python drive.py <page-dir>/index.html`):
+
+```python
+import sys
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+
+url = Path(sys.argv[1]).resolve().as_uri()
+bad = []
+with sync_playwright() as pw:
+    browser = pw.chromium.launch()
+    for w in (1280, 390):
+        page = browser.new_page(viewport={"width": w, "height": 900}, color_scheme="light")
+        page.on("console", lambda m: m.type == "error" and bad.append(f"@{w} console: {m.text}"))
+        page.on("pageerror", lambda e: bad.append(f"@{w} pageerror: {e}"))
+        page.goto(url, wait_until="load")
+        page.wait_for_timeout(500)
+        for b in page.locator("button:visible").all():
+            b.click()
+            page.wait_for_timeout(100)
+        for r in page.locator("input[type=range]:visible").all():
+            for v in ("min", "max"):
+                r.evaluate(f"e => {{ e.value = e.{v}; e.dispatchEvent(new Event('input', {{bubbles: true}})); e.dispatchEvent(new Event('change', {{bubbles: true}})); }}")
+        for s in page.locator("select:visible").all():
+            s.select_option(index=s.locator("option").count() - 1)
+        page.wait_for_timeout(500)
+        sw, iw = page.evaluate("[document.documentElement.scrollWidth, innerWidth]")
+        if sw > iw:
+            bad.append(f"@{w} horizontal overflow {sw}>{iw}")
+        page.close()
+    browser.close()
+print("\n".join(bad) or "OK")
+sys.exit(1 if bad else 0)
+```
+
 - 애니메이션이 실제로 움직이는지, 재생/일시정지·처음으로가 먹는지, 슬라이더를 옮기면 그림이 바뀌는지는 상태(예: SVG 속성)를 두 번 읽어 비교하거나 스크린샷으로 눈으로 본다.
 - `prefers-reduced-motion`에서 멈춘 채 시작하는지는 `browser.new_page(reduced_motion="reduce")`로 확인한다.
 
