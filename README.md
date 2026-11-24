@@ -2,7 +2,7 @@
 
 A Claude Code plugin with one skill, `explainer-page`: turn a paper, lecture video, code repository, or tech blog into an interactive, self-contained HTML explainer page.
 
-The skill covers source checking, a reader-level interview, page structure, writing, visuals (SVG / canvas / three.js animations), video clips with subtitles, and verification. Output is a single `index.html` with inline CSS/JS and no build step; external libraries are either pinned CDN URLs or vendored files.
+The skill covers source checking, a multi-round reader-level interview (goals, layered self-assessment, check questions), page structure, writing, visuals (SVG / canvas / three.js animations), video clips with subtitles, verification, and a fresh-reader review by a context-free subagent. Output is a single `index.html` with inline CSS/JS and no build step; external libraries are either pinned CDN URLs or vendored files.
 
 Default output language is **Korean**. Ask for another language (or set it in a project `CLAUDE.md`) and the skill adapts `lang`, fonts, and tone while keeping all other rules.
 
@@ -34,7 +34,7 @@ uv run --with playwright python skills/explainer-page/scripts/check_page.py path
 .claude-plugin/plugin.json        plugin manifest
 .claude-plugin/marketplace.json   single-plugin marketplace
 skills/explainer-page/SKILL.md    workflow and core rules
-skills/explainer-page/references/ writing, visuals, style, verify
+skills/explainer-page/references/ writing, visuals, style, verify, interview, fresh-reader
 skills/explainer-page/scripts/check_page.py
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "explainer-page",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Write interactive single-file HTML explainer pages from papers, lectures, code, and tech blogs (Korean by default).",
   "keywords": [
     "explainer",
